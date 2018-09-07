@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# On which queue it has to run (prod, debug)
+#SBATCH --partition debug
+
+# mailing system
+#SBATCH --mail-user=antoine.tavant@lpp.polytechnique.fr --mail-type=ALL
+
+#SBATCH --threads-per-core=1
+# Name
+#SBATCH -J profile
+
+# Nombre de noeud : NBNODE (24 CPUs/noeud) (max 15 on "prod", 2 on "debug")
+#SBATCH -N 1
+
+# Nombre de processus MPI par noeud : ntaskpernode
+#SBATCH --ntasks-per-node=24
+
+# Name of outputs
+#SBATCH -o %J.out
+#SBATCH -e %J.err
+
+# set max wallclock time (h:m:s) (max on nemo: 12h)
+#SBATCH --time=12:00:00
+#SBATCH --time=00:00:30
+
+cd $SLURM_SUBMIT_DIR
+
+# SLURM_NTASKS = NBNODE*ntasks-per-node (or SLURM_NPROCS for backwards compatibility)
+# Put TRUE if it is beginning from a restart, FALSE if first run
+sleep 1
+echo "yo" >> memo
+sleep 7
+echo "a file" >> tabgrid.dat
+sleep 60
+rm memo tabgrid
